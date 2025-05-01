@@ -1,4 +1,5 @@
 import Link from "next/link";
+import * as motion from "motion/react-client";
 export default function Nav() {
   return (
     <div className="navbar bg-transparent container mx-auto flex justify-evenly items-center pt-6">
@@ -32,24 +33,62 @@ export default function Nav() {
       <div className="">
         <ul className="menu menu-horizontal px-1 text-2xl text-white">
           <Link href="/">
-            <li>
+            <motion.li
+              whileHover={{
+                scale: [null, 1.05, 1.15],
+                transition: {
+                  duration: 0.5,
+                  times: [0, 0.6, 1],
+                  ease: ["easeInOut", "easeOut"],
+                },
+              }}
+              whileTap={{ scale: 0.8 }}
+            >
               <button>Anasayfa</button>
-            </li>
+            </motion.li>
           </Link>
           <Link href="/urunler">
-            <li>
+            <motion.li
+              whileHover={{
+                scale: [null, 1.05, 1.15],
+                transition: {
+                  duration: 0.5,
+                  times: [0, 0.6, 1],
+                  ease: ["easeInOut", "easeOut"],
+                },
+              }}
+            >
               <button>Ürünler</button>
-            </li>
+            </motion.li>
           </Link>
-          <Link href="/">
-            <li>
+          <Link href="/hakkimizda">
+            <motion.li
+              whileHover={{
+                scale: [null, 1.05, 1.15],
+                transition: {
+                  duration: 0.5,
+                  times: [0, 0.6, 1],
+                  ease: ["easeInOut", "easeOut"],
+                },
+              }}
+              whileTap={{ scale: 0.8 }}
+            >
               <button>Hakkımızda</button>
-            </li>
+            </motion.li>
           </Link>
-          <Link href="/">
-            <li>
+          <Link href="/galeri">
+            <motion.li
+              whileHover={{
+                scale: [null, 1.05, 1.15],
+                transition: {
+                  duration: 0.5,
+                  times: [0, 0.6, 1],
+                  ease: ["easeInOut", "easeOut"],
+                },
+              }}
+            >
               <button>Galeri</button>
-            </li>
+            </motion.li>
           </Link>
           {/* <li>
             <details>
