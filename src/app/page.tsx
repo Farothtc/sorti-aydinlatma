@@ -1,6 +1,9 @@
+"use client";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Nav from "./Components/Nav";
 import Footer from "./Components/Footer";
+import ScrollEffect from "./Components/ScrollEffect";
 
 export default function Home() {
   const style: React.CSSProperties = {
@@ -10,29 +13,113 @@ export default function Home() {
     height: "100dvh",
     width: "100%",
   };
+  const ref = useRef<HTMLDivElement>(null);
+  const refBelow = useRef<HTMLDivElement>(null);
+  const scrollToTop = () => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+
+    if (refBelow.current) {
+      observer.observe(refBelow.current);
+    }
+  }, []);
+
+  const [changeColor, setChangeColor] = useState([
+    "#e81416",
+    "#ffa500",
+    "#faeb36",
+    "#79c314",
+    "#487de7",
+    "#4b369d",
+    "#70369d",
+  ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setChangeColor((prev) => {
+        const newColors = [...prev];
+        const firstColor = newColors.shift();
+        if (firstColor) {
+          newColors.push(firstColor);
+        }
+        return newColors;
+      });
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex flex-col">
-      <main style={style}>
+      <main style={style} ref={ref}>
         <Nav />
         <div className="relative flex flex-col justify-center items-center pt-[10%] text-white">
-          <h1 className="text-9xl">Doğru Işık,</h1>
+          <div className="flex">
+            <h1 className="text-9xl">Doğru</h1>
+            <h1
+              className="text-9xl ms-8"
+              style={{
+                color: changeColor[0],
+                transition: "color 0.5s ease-in-out",
+              }}
+            >
+              Işık
+            </h1>
+            <h1 className="text-9xl">,</h1>
+          </div>
           <h1 className="text-9xl font-extrabold text-nowrap">
             her şeyi değiştirir
           </h1>
         </div>
       </main>
+
       {/* Ürünlerimiz */}
       <section className="relative h-screen bg-white">
+        <div>
+          <div
+            className={`fixed card w-16 h-16 z-10 card-xs border-2 border-[#663829] bg-transparent rounded-4xl right-5 bottom-5 cursor-pointer transition-opacity duration-300 ${
+              isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            onClick={scrollToTop}
+          >
+            <div className="card-body flex flex-col justify-center items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-8 text-[#663829]"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-8xl pt-10 text-black">Ürünlerimiz</h1>
         </div>
-        <div className="grid grid-cols-4 grid-rows-[360px_360px] gap-5 p-5">
-          <div className="row-span-1 col-span-1 h-[360px]">
-            <div className="card bg-transparent h-[360px] ">
-              <figure className="relative h-[360px] ">
+        <div className="grid grid-cols-10 grid-rows-[360px_360px] gap-5 p-5">
+          <div className="row-span-1 col-span-2 min-h-[50px]">
+            <div className="card bg-transparent ">
+              <figure className="relative ">
                 <img
                   src="/AKSESUARLAR.jpg"
-                  className="rounded-3xl h-[360px] w-full"
+                  className="rounded-3xl h-full w-full"
                   alt="aksesuar"
                 />
               </figure>
@@ -41,7 +128,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-[360px]">
+          <div className="row-span-1 col-span-2 h-[360px]">
             <div className="card bg-transparent h-[360px]">
               <figure className="relative h-[360px]">
                 <img
@@ -57,7 +144,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-[360px]">
+          <div className="row-span-1 col-span-3 h-[360px]">
             <div className="card bg-transparent h-[360px]">
               <figure className="relative h-[360px]">
                 <img
@@ -71,7 +158,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-[360px]">
+          <div className="row-span-1 col-span-3 h-[360px]">
             <div className="card bg-transparent h-[360px]">
               <figure className="relative h-[360px]">
                 <img
@@ -85,7 +172,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 ">
+          <div className="row-span-1 col-span-2 ">
             <div className="card bg-transparent ">
               <figure className="relative ">
                 <img
@@ -99,7 +186,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-full">
+          <div className="row-span-1 col-span-2 h-full">
             <div className="card bg-transparent h-full">
               <figure className="relative h-full">
                 <img
@@ -113,7 +200,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-full">
+          <div className="row-span-1 col-span-3 h-full">
             <div className="card bg-transparent h-full">
               <figure className="relative h-full">
                 <img
@@ -127,7 +214,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="row-span-1 col-span-1 h-full">
+          <div className="row-span-1 col-span-3 h-full">
             <div className="card bg-transparent h-full">
               <figure className="relative h-full">
                 <img
@@ -143,6 +230,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* Hayatınıza Ne Katar */}
       <section className="relative h-screen bg-white pt-15">
         <div className="grid grid-cols-[40%_60%] grid-rows-1 gap-5 p-5">
@@ -266,27 +354,7 @@ export default function Home() {
         </div>
       </section>
       {/* Size Özel Seçimlerimiz */}
-      <section className="relative h-screen bg-white">
-        <div>
-          <div className="absolute card w-16 h-16 z-10 card-xs border-2 border-[#663829] bg-transparent rounded-4xl right-5 bottom-5">
-            <div className="card-body flex flex-col justify-center items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-8 text-[#663829]"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+      <section className="relative h-screen bg-white" ref={refBelow}>
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-6xl pt-10" style={{ color: "#663829" }}>
             Size Özel Seçimlerimiz
@@ -428,6 +496,7 @@ export default function Home() {
         </div>
       </section>
       <Footer />
+      <ScrollEffect />
     </div>
   );
 }
